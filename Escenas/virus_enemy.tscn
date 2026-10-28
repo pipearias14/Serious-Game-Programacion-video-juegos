@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://wvhl48fukylm"]
+
+[ext_resource type="Texture2D" uid="uid://dpm4mtbjgap8" path="res://sprites_serious_game/virus.png" id="1_2gig4"]
+[ext_resource type="Script" uid="uid://dk7fpdtw1pak2" path="res://Escenas/virus_enemy.gd" id="1_27laq"]
+[ext_resource type="PackedScene" uid="uid://bqw5x4kolp7sy" path="res://Escenas/hardware_item.tscn" id="2_o2ueg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kghbt"]
+size = Vector2(128, 150)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kghbt"]
+radius = 192.57
+
+[node name="VirusEnemy" type="CharacterBody2D" unique_id=2077095633]
+scale = Vector2(0.5, 0.5)
+collision_layer = 4
+script = ExtResource("1_27laq")
+hardware_scene = ExtResource("2_o2ueg")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=67161114]
+texture = ExtResource("1_2gig4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1564168650]
+position = Vector2(0, 3)
+shape = SubResource("RectangleShape2D_kghbt")
+
+[node name="DetectionZone" type="Area2D" parent="." unique_id=538379433]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionZone" unique_id=847157544]
+shape = SubResource("CircleShape2D_kghbt")
+
+[connection signal="body_entered" from="DetectionZone" to="." method="_on_detection_zone_body_entered"]
+[connection signal="body_exited" from="DetectionZone" to="." method="_on_detection_zone_body_exited"]

@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://bqw5x4kolp7sy"]
+
+[ext_resource type="Texture2D" uid="uid://cprjxej5srvq4" path="res://sprites_serious_game/item_board.png" id="1_3rtoy"]
+[ext_resource type="Script" uid="uid://dxuridj68xuxw" path="res://hardware_item.gd" id="1_xkok0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kghbt"]
+size = Vector2(188, 189)
+
+[node name="HardwareItem" type="Area2D" unique_id=1191812293]
+scale = Vector2(0.4, 0.4)
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("1_xkok0")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=368808713]
+texture = ExtResource("1_3rtoy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=16222725]
+light_mask = 2
+visibility_layer = 8
+position = Vector2(-1, -0.5)
+shape = SubResource("RectangleShape2D_kghbt")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
