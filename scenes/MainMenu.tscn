@@ -1,0 +1,229 @@
+[gd_scene load_steps=16 format=3]
+
+[ext_resource type="Script" path="res://scripts/MainMenu.gd" id="1_menu"]
+[ext_resource type="PackedScene" path="res://scenes/FloorZone.tscn" id="2_floor"]
+[ext_resource type="Texture2D" path="res://assets/sprites/player_down.png" id="3_player"]
+[ext_resource type="Texture2D" path="res://assets/sprites/item_ram.png" id="4_ram"]
+[ext_resource type="Texture2D" path="res://assets/sprites/item_cpu.png" id="5_cpu"]
+[ext_resource type="Texture2D" path="res://assets/sprites/item_board.png" id="6_board"]
+[ext_resource type="Texture2D" path="res://assets/sprites/item_disk.png" id="7_disk"]
+[ext_resource type="Texture2D" path="res://assets/sprites/virus_worm.png" id="8_worm"]
+[ext_resource type="Texture2D" path="res://assets/sprites/virus_trojan.png" id="9_trojan"]
+[ext_resource type="Texture2D" path="res://assets/sprites/virus_runner.png" id="10_runner"]
+[ext_resource type="Texture2D" path="res://assets/sprites/virus_spammer.png" id="11_spammer"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn"]
+bg_color = Color(0.2, 0.235294, 0.341176, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.580392, 0.690196, 0.760784, 1)
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_hover"]
+bg_color = Color(0.231373, 0.364706, 0.788235, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.45098, 0.937255, 0.968627, 1)
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_focus"]
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.803922, 0.458824, 1)
+
+[node name="MainMenu" type="Node2D"]
+script = ExtResource("1_menu")
+
+[node name="Floor" parent="." instance=ExtResource("2_floor")]
+position = Vector2(0, 0)
+zone_size = Vector2(640, 360)
+
+[node name="Dim" type="Polygon2D" parent="."]
+color = Color(0.101961, 0.109804, 0.172549, 0.72)
+polygon = PackedVector2Array(0, 0, 640, 0, 640, 360, 0, 360)
+
+[node name="MainGroup" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Title" type="Label" parent="MainGroup"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 0.0
+offset_top = 26.0
+offset_right = 640.0
+offset_bottom = 86.0
+theme_override_colors/font_color = Color(0.654902, 0.941176, 0.439216, 1)
+theme_override_colors/font_outline_color = Color(0.364706, 0.152941, 0.364706, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 44
+text = "TECH HUNTER"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="MainGroup"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 90.0
+offset_right = 640.0
+offset_bottom = 110.0
+theme_override_colors/font_color = Color(0.45098, 0.937255, 0.968627, 1)
+theme_override_font_sizes/font_size = 12
+text = "SERIOUS GAME  -  ENSAMBLA PCs Y DERROTA A LOS VIRUS"
+horizontal_alignment = 1
+
+[node name="Sprites" type="Node2D" parent="MainGroup"]
+
+[node name="Player" type="Sprite2D" parent="MainGroup/Sprites"]
+position = Vector2(160, 140)
+scale = Vector2(2, 2)
+texture = ExtResource("3_player")
+
+[node name="Ram" type="Sprite2D" parent="MainGroup/Sprites"]
+position = Vector2(200, 140)
+scale = Vector2(2, 2)
+texture = ExtResource("4_ram")
+
+[node name="Cpu" type="Sprite2D" parent="MainGroup/Sprites"]
+position = Vector2(240, 140)
+scale = Vector2(2, 2)
+texture = ExtResource("5_cpu")
+
+[node name="Board" type="Sprite2D" parent="MainGroup/Sprites"]
+position = Vector2(280, 140)
+scale = Vector2(2, 2)
+texture = ExtResource("6_board")
+
+[node name="Disk" type="Sprite2D" parent="MainGroup/Sprites"]
+position = Vector2(320, 140)
+scale = Vector2(2, 2)
+texture = ExtResource("7_disk")
+
+[node name="Worm" type="Sprite2D" parent="MainGroup/Sprites"]
+position = Vector2(360, 140)
+scale = Vector2(2, 2)
+texture = ExtResource("8_worm")
+
+[node name="Trojan" type="Sprite2D" parent="MainGroup/Sprites"]
+position = Vector2(400, 140)
+scale = Vector2(2, 2)
+texture = ExtResource("9_trojan")
+
+[node name="Runner" type="Sprite2D" parent="MainGroup/Sprites"]
+position = Vector2(440, 140)
+scale = Vector2(2, 2)
+texture = ExtResource("10_runner")
+
+[node name="Spammer" type="Sprite2D" parent="MainGroup/Sprites"]
+position = Vector2(480, 140)
+scale = Vector2(2, 2)
+texture = ExtResource("11_spammer")
+
+[node name="PlayButton" type="Button" parent="MainGroup"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 210.0
+offset_top = 172.0
+offset_right = 430.0
+offset_bottom = 202.0
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_focus")
+text = "JUGAR"
+
+[node name="HowButton" type="Button" parent="MainGroup"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 210.0
+offset_top = 210.0
+offset_right = 430.0
+offset_bottom = 240.0
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_focus")
+text = "CÓMO JUGAR"
+
+[node name="QuitButton" type="Button" parent="MainGroup"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 210.0
+offset_top = 248.0
+offset_right = 430.0
+offset_bottom = 278.0
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_focus")
+text = "SALIR"
+
+[node name="Footer" type="Label" parent="MainGroup"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 292.0
+offset_right = 640.0
+offset_bottom = 310.0
+theme_override_colors/font_color = Color(0.580392, 0.690196, 0.760784, 1)
+theme_override_font_sizes/font_size = 10
+text = "Flechas / Enter para elegir     M: música"
+horizontal_alignment = 1
+
+[node name="HowToGroup" type="Node2D" parent="."]
+unique_name_in_owner = true
+visible = false
+
+[node name="HowBorder" type="Polygon2D" parent="HowToGroup"]
+color = Color(0.254902, 0.65098, 0.964706, 1)
+polygon = PackedVector2Array(46, 26, 594, 26, 594, 334, 46, 334)
+
+[node name="HowPanel" type="Polygon2D" parent="HowToGroup"]
+color = Color(0.101961, 0.109804, 0.172549, 0.97)
+polygon = PackedVector2Array(48, 28, 592, 28, 592, 332, 48, 332)
+
+[node name="HowTitle" type="Label" parent="HowToGroup"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 36.0
+offset_right = 640.0
+offset_bottom = 62.0
+theme_override_colors/font_color = Color(1, 0.803922, 0.458824, 1)
+theme_override_font_sizes/font_size = 18
+text = "CÓMO JUGAR"
+horizontal_alignment = 1
+
+[node name="HowText" type="Label" parent="HowToGroup"]
+layout_mode = 0
+offset_left = 70.0
+offset_top = 70.0
+offset_right = 570.0
+offset_bottom = 282.0
+theme_override_font_sizes/font_size = 12
+text = "- Antes de jugar harás un test de 5 preguntas de hardware. Al ganar lo repetirás para ver cuánto aprendiste.\n- Muévete con WASD o las flechas. Dispara con ESPACIO.\n- Recoge piezas (RAM, CPU, BOARD, DISK) y las que sueltan los virus al morir.\n- Llévalas a la MESA DE TRABAJO para completar misiones y avanzar de nivel.\n- Un virus o su proyectil te quita 1 vida y todo tu inventario. Los corazones te curan.\n- Virus: Gusano, Troyano (resistente), Corredor (rápido) y Spammer (dispara).\n- Al completar las misiones se abre la arena del REY RANSOMWARE. ¡Derrótalo!\n\nM: música     R: reiniciar     ESC: volver al menú"
+horizontal_alignment = 0
+autowrap_mode = 3
+
+[node name="CloseButton" type="Button" parent="HowToGroup"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 240.0
+offset_top = 292.0
+offset_right = 400.0
+offset_bottom = 320.0
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_focus")
+text = "VOLVER"
+

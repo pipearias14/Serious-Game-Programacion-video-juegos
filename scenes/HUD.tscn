@@ -1,0 +1,248 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/HUD.gd" id="1_hud"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+content_margin_left = 6.0
+content_margin_top = 4.0
+content_margin_right = 6.0
+content_margin_bottom = 4.0
+bg_color = Color(0.101961, 0.109804, 0.172549, 0.88)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.254902, 0.65098, 0.964706, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bossbg"]
+bg_color = Color(0.101961, 0.109804, 0.172549, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.94, 0.94, 0.94, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bossfill"]
+bg_color = Color(0.694118, 0.243137, 0.325490, 1)
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_hud")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Margin" type="MarginContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Layout" type="VBoxContainer" parent="Root/Margin"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TopBar" type="HBoxContainer" parent="Root/Margin/Layout"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MissionPanel" type="PanelContainer" parent="Root/Margin/Layout/TopBar"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="MissionBox" type="VBoxContainer" parent="Root/Margin/Layout/TopBar/MissionPanel"]
+layout_mode = 2
+
+[node name="MissionTitle" type="Label" parent="Root/Margin/Layout/TopBar/MissionPanel/MissionBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.803922, 0.458824, 1)
+theme_override_font_sizes/font_size = 14
+text = "MISIÓN"
+
+[node name="MissionNeeds" type="Label" parent="Root/Margin/Layout/TopBar/MissionPanel/MissionBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "RAM 0/1   CPU 0/1   BOARD 0/1"
+
+[node name="TopSpacer" type="Control" parent="Root/Margin/Layout/TopBar"]
+layout_mode = 2
+mouse_filter = 2
+size_flags_horizontal = 3
+
+[node name="InfoPanel" type="PanelContainer" parent="Root/Margin/Layout/TopBar"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="InfoBox" type="VBoxContainer" parent="Root/Margin/Layout/TopBar/InfoPanel"]
+layout_mode = 2
+
+[node name="HeartsRow" type="HBoxContainer" parent="Root/Margin/Layout/TopBar/InfoPanel/InfoBox"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+alignment = 2
+
+[node name="LevelLabel" type="Label" parent="Root/Margin/Layout/TopBar/InfoPanel/InfoBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45098, 0.937255, 0.968627, 1)
+theme_override_font_sizes/font_size = 14
+text = "NIVEL 1"
+horizontal_alignment = 2
+
+[node name="KillsLabel" type="Label" parent="Root/Margin/Layout/TopBar/InfoPanel/InfoBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Virus: 0"
+horizontal_alignment = 2
+
+[node name="BossBox" type="VBoxContainer" parent="Root/Margin/Layout"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_filter = 2
+size_flags_horizontal = 4
+
+[node name="BossName" type="Label" parent="Root/Margin/Layout/BossBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.45, 0.5, 1)
+theme_override_colors/font_outline_color = Color(0.101961, 0.109804, 0.172549, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 12
+text = "REY RANSOMWARE"
+horizontal_alignment = 1
+
+[node name="BossBar" type="ProgressBar" parent="Root/Margin/Layout/BossBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 12)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_bossbg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bossfill")
+max_value = 40.0
+value = 40.0
+show_percentage = false
+
+[node name="Toast" type="Label" parent="Root/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.803922, 0.458824, 1)
+theme_override_colors/font_outline_color = Color(0.101961, 0.109804, 0.172549, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 12
+text = " "
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="Root/Margin/Layout"]
+layout_mode = 2
+mouse_filter = 2
+size_flags_vertical = 3
+
+[node name="BottomBar" type="HBoxContainer" parent="Root/Margin/Layout"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="InventoryPanel" type="PanelContainer" parent="Root/Margin/Layout/BottomBar"]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="InventoryBox" type="VBoxContainer" parent="Root/Margin/Layout/BottomBar/InventoryPanel"]
+layout_mode = 2
+
+[node name="InventoryTitle" type="Label" parent="Root/Margin/Layout/BottomBar/InventoryPanel/InventoryBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.654902, 0.941176, 0.439216, 1)
+theme_override_font_sizes/font_size = 12
+text = "INVENTARIO"
+
+[node name="InventoryList" type="VBoxContainer" parent="Root/Margin/Layout/BottomBar/InventoryPanel/InventoryBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="BottomSpacer" type="Control" parent="Root/Margin/Layout/BottomBar"]
+layout_mode = 2
+mouse_filter = 2
+size_flags_horizontal = 3
+
+[node name="HelpLabel" type="Label" parent="Root/Margin/Layout/BottomBar"]
+layout_mode = 2
+size_flags_vertical = 8
+mouse_filter = 2
+theme_override_colors/font_outline_color = Color(0.101961, 0.109804, 0.172549, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 10
+text = "WASD/Flechas: mover   ESPACIO: disparar   M: música   R: reiniciar   ESC: menú"
+horizontal_alignment = 2
+
+[node name="Victory" type="ColorRect" parent="Root"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.101961, 0.109804, 0.172549, 0.85)
+
+[node name="VictoryLabel" type="Label" parent="Root/Victory"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.654902, 0.941176, 0.439216, 1)
+theme_override_font_sizes/font_size = 20
+text = "¡SISTEMA LIBERADO!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GameOver" type="ColorRect" parent="Root"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.2, 0.04, 0.08, 0.85)
+
+[node name="GameOverLabel" type="Label" parent="Root/GameOver"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.94, 0.45, 0.5, 1)
+theme_override_font_sizes/font_size = 24
+text = "GAME OVER
+
+El sistema fue infectado...
+
+R: reintentar   ESC: menú"
+horizontal_alignment = 1
+vertical_alignment = 1

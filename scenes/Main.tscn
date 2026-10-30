@@ -1,0 +1,272 @@
+[gd_scene format=3 uid="uid://b27yt1w14sn8p"]
+
+[ext_resource type="Script" uid="uid://ce85k2h2bvsd5" path="res://scripts/Main.gd" id="1_main"]
+[ext_resource type="PackedScene" path="res://scenes/FloorZone.tscn" id="2_floorzone"]
+[ext_resource type="Texture2D" uid="uid://e45jemtxyclq" path="res://assets/sprites/floor_pcb_a.png" id="3_qmy6f"]
+[ext_resource type="Texture2D" uid="uid://bl764wjyyfapv" path="res://assets/sprites/floor_c.png" id="4_floor_c"]
+[ext_resource type="PackedScene" path="res://scenes/Wall.tscn" id="5_wall"]
+[ext_resource type="Texture2D" uid="uid://dd43paat1gfm8" path="res://assets/sprites/wall_pcb.png" id="6_mwfav"]
+[ext_resource type="Texture2D" uid="uid://cvbvc01xf23vd" path="res://assets/sprites/rack.png" id="6_rack"]
+[ext_resource type="Texture2D" uid="uid://bnx21x8biobih" path="res://assets/sprites/gate.png" id="7_gate"]
+[ext_resource type="Texture2D" uid="uid://bmyjyb1j4nmof" path="res://assets/sprites/gate_pcb.png" id="8_3p2gp"]
+[ext_resource type="PackedScene" path="res://scenes/Workbench.tscn" id="8_bench"]
+[ext_resource type="PackedScene" path="res://scenes/HardwareItem.tscn" id="9_item"]
+[ext_resource type="Texture2D" uid="uid://ciuupcqinw753" path="res://assets/sprites/heatsink_48x32.png" id="10_nfivy"]
+[ext_resource type="PackedScene" uid="uid://c6w7boostmi5e" path="res://scenes/VirusEnemy.tscn" id="10_virus"]
+[ext_resource type="Texture2D" uid="uid://fxclj0nptw2j" path="res://assets/sprites/cap_blue_16x24.png" id="11_1nqs0"]
+[ext_resource type="PackedScene" path="res://scenes/Boss.tscn" id="11_boss"]
+[ext_resource type="Texture2D" uid="uid://dwsv614ntw50r" path="res://assets/sprites/chip_soic_64x32.png" id="12_1iba3"]
+[ext_resource type="PackedScene" path="res://scenes/TechPlayer.tscn" id="12_player"]
+[ext_resource type="Texture2D" uid="uid://luypu273sb13" path="res://assets/sprites/chip_qfp_32.png" id="13_1nqs0"]
+[ext_resource type="PackedScene" path="res://scenes/HUD.tscn" id="13_hud"]
+[ext_resource type="Texture2D" uid="uid://dtq77widkhvyx" path="res://assets/sprites/chip_qfp_64.png" id="13_yxlcp"]
+
+[node name="Main" type="Node2D" unique_id=918213405]
+script = ExtResource("1_main")
+
+[node name="Floors" type="Node2D" parent="." unique_id=1324100869]
+
+[node name="ZoneA_Floor" parent="Floors" unique_id=486694316 instance=ExtResource("2_floorzone")]
+zone_size = Vector2(704, 704)
+
+[node name="ZoneB_Floor" parent="Floors" unique_id=500523967 instance=ExtResource("2_floorzone")]
+position = Vector2(704, 0)
+zone_size = Vector2(576, 704)
+tile_texture = ExtResource("3_qmy6f")
+
+[node name="ZoneC_Floor" parent="Floors" unique_id=2075330647 instance=ExtResource("2_floorzone")]
+position = Vector2(0, 704)
+zone_size = Vector2(1280, 376)
+tile_texture = ExtResource("4_floor_c")
+
+[node name="Walls" type="Node2D" parent="." unique_id=1834779856]
+
+[node name="WallTop" parent="Walls" unique_id=263092767 instance=ExtResource("5_wall")]
+wall_size = Vector2(1280, 16)
+tile_texture = ExtResource("6_mwfav")
+
+[node name="WallBottom" parent="Walls" unique_id=1479454727 instance=ExtResource("5_wall")]
+position = Vector2(0, 1064)
+wall_size = Vector2(1280, 16)
+
+[node name="WallLeft" parent="Walls" unique_id=25305681 instance=ExtResource("5_wall")]
+position = Vector2(0, 16)
+wall_size = Vector2(16, 1048)
+
+[node name="WallRight" parent="Walls" unique_id=791634016 instance=ExtResource("5_wall")]
+position = Vector2(1264, 16)
+wall_size = Vector2(16, 1048)
+
+[node name="DividerTop" parent="Walls" unique_id=977017362 instance=ExtResource("5_wall")]
+position = Vector2(704, 16)
+wall_size = Vector2(16, 304)
+
+[node name="Gate1" parent="Walls" unique_id=1369221171 instance=ExtResource("5_wall")]
+position = Vector2(704, 320)
+wall_size = Vector2(16, 80)
+tile_texture = ExtResource("7_gate")
+opens_at_level = 2
+
+[node name="DividerBottom" parent="Walls" unique_id=500692102 instance=ExtResource("5_wall")]
+position = Vector2(704, 400)
+wall_size = Vector2(16, 304)
+
+[node name="MidLeft" parent="Walls" unique_id=817616418 instance=ExtResource("5_wall")]
+position = Vector2(16, 704)
+wall_size = Vector2(1080, 16)
+
+[node name="Gate2" parent="Walls" unique_id=2024241699 instance=ExtResource("5_wall")]
+position = Vector2(1096, 704)
+wall_size = Vector2(80, 16)
+tile_texture = ExtResource("8_3p2gp")
+opens_at_level = 4
+
+[node name="MidRight" parent="Walls" unique_id=2072268822 instance=ExtResource("5_wall")]
+position = Vector2(1176, 704)
+wall_size = Vector2(88, 16)
+
+[node name="RackA1" parent="Walls" unique_id=1069000532 instance=ExtResource("5_wall")]
+position = Vector2(240, 160)
+wall_size = Vector2(32, 64)
+tile_texture = ExtResource("6_rack")
+
+[node name="RackA2" parent="Walls" unique_id=2083168885 instance=ExtResource("5_wall")]
+position = Vector2(400, 300)
+wall_size = Vector2(64, 32)
+tile_texture = ExtResource("6_rack")
+
+[node name="RackA3" parent="Walls" unique_id=796669635 instance=ExtResource("5_wall")]
+position = Vector2(300, 520)
+wall_size = Vector2(32, 96)
+tile_texture = ExtResource("6_rack")
+
+[node name="RackA4" parent="Walls" unique_id=857672338 instance=ExtResource("5_wall")]
+position = Vector2(540, 100)
+wall_size = Vector2(96, 32)
+tile_texture = ExtResource("6_rack")
+
+[node name="RackA5" parent="Walls" unique_id=25666857 instance=ExtResource("5_wall")]
+position = Vector2(520, 480)
+wall_size = Vector2(32, 64)
+tile_texture = ExtResource("6_rack")
+
+[node name="RackB1" parent="Walls" unique_id=1399329022 instance=ExtResource("5_wall")]
+position = Vector2(820, 120)
+wall_size = Vector2(96, 32)
+tile_texture = ExtResource("10_nfivy")
+
+[node name="RackB2" parent="Walls" unique_id=539256417 instance=ExtResource("5_wall")]
+position = Vector2(1000, 260)
+wall_size = Vector2(32, 96)
+tile_texture = ExtResource("11_1nqs0")
+
+[node name="RackB3" parent="Walls" unique_id=1146315084 instance=ExtResource("5_wall")]
+position = Vector2(850, 460)
+wall_size = Vector2(64, 32)
+tile_texture = ExtResource("12_1iba3")
+
+[node name="RackB4" parent="Walls" unique_id=1073396242 instance=ExtResource("5_wall")]
+position = Vector2(1100, 500)
+wall_size = Vector2(32, 96)
+tile_texture = ExtResource("13_1nqs0")
+
+[node name="RackB5" parent="Walls" unique_id=140954467 instance=ExtResource("5_wall")]
+position = Vector2(1100, 105)
+wall_size = Vector2(64, 32)
+tile_texture = ExtResource("13_yxlcp")
+
+[node name="PillarC1" parent="Walls" unique_id=1217472960 instance=ExtResource("5_wall")]
+position = Vector2(240, 780)
+wall_size = Vector2(32, 32)
+tile_texture = ExtResource("6_rack")
+
+[node name="PillarC2" parent="Walls" unique_id=1604436853 instance=ExtResource("5_wall")]
+position = Vector2(1008, 780)
+wall_size = Vector2(32, 32)
+tile_texture = ExtResource("6_rack")
+
+[node name="PillarC3" parent="Walls" unique_id=688236691 instance=ExtResource("5_wall")]
+position = Vector2(240, 980)
+wall_size = Vector2(32, 32)
+tile_texture = ExtResource("6_rack")
+
+[node name="PillarC4" parent="Walls" unique_id=1610393889 instance=ExtResource("5_wall")]
+position = Vector2(1008, 980)
+wall_size = Vector2(32, 32)
+tile_texture = ExtResource("6_rack")
+
+[node name="Workbench" parent="." unique_id=1949416242 instance=ExtResource("8_bench")]
+position = Vector2(90, 104)
+
+[node name="Workbench4" parent="." unique_id=1036634544 instance=ExtResource("8_bench")]
+position = Vector2(774, 541)
+
+[node name="Workbench3" parent="." unique_id=216310320 instance=ExtResource("8_bench")]
+position = Vector2(488, 516)
+
+[node name="Workbench2" parent="." unique_id=873992612 instance=ExtResource("8_bench")]
+position = Vector2(1007, 134)
+
+[node name="Items" type="Node2D" parent="." unique_id=1076405339 groups=["items_container"]]
+
+[node name="Item1_RAM" parent="Items" unique_id=1970748030 instance=ExtResource("9_item")]
+position = Vector2(360, 110)
+
+[node name="Item2_RAM" parent="Items" unique_id=190543446 instance=ExtResource("9_item")]
+position = Vector2(150, 600)
+
+[node name="Item3_CPU" parent="Items" unique_id=1730414050 instance=ExtResource("9_item")]
+position = Vector2(620, 560)
+item_type = "CPU"
+
+[node name="Item4_BOARD" parent="Items" unique_id=1670103372 instance=ExtResource("9_item")]
+position = Vector2(610, 250)
+item_type = "BOARD"
+
+[node name="Item5_LIFE" parent="Items" unique_id=920252764 instance=ExtResource("9_item")]
+position = Vector2(350, 440)
+item_type = "LIFE"
+
+[node name="Item6_RAM" parent="Items" unique_id=321621145 instance=ExtResource("9_item")]
+position = Vector2(760, 100)
+
+[node name="Item7_RAM" parent="Items" unique_id=320404417 instance=ExtResource("9_item")]
+position = Vector2(1200, 180)
+
+[node name="Item8_RAM" parent="Items" unique_id=424422475 instance=ExtResource("9_item")]
+position = Vector2(780, 640)
+
+[node name="Item9_CPU" parent="Items" unique_id=1574853307 instance=ExtResource("9_item")]
+position = Vector2(1050, 600)
+item_type = "CPU"
+
+[node name="Item10_CPU" parent="Items" unique_id=100869912 instance=ExtResource("9_item")]
+position = Vector2(1220, 420)
+item_type = "CPU"
+
+[node name="Item11_BOARD" parent="Items" unique_id=1948178080 instance=ExtResource("9_item")]
+position = Vector2(900, 330)
+item_type = "BOARD"
+
+[node name="Item12_BOARD" parent="Items" unique_id=432407069 instance=ExtResource("9_item")]
+position = Vector2(1230, 80)
+item_type = "BOARD"
+
+[node name="Item13_DISK" parent="Items" unique_id=8246057 instance=ExtResource("9_item")]
+position = Vector2(1210, 660)
+item_type = "DISK"
+
+[node name="Item14_LIFE" parent="Items" unique_id=1861976368 instance=ExtResource("9_item")]
+position = Vector2(1150, 250)
+item_type = "LIFE"
+
+[node name="Item15_LIFE" parent="Items" unique_id=1187733077 instance=ExtResource("9_item")]
+position = Vector2(200, 900)
+item_type = "LIFE"
+
+[node name="Item16_LIFE" parent="Items" unique_id=1260149226 instance=ExtResource("9_item")]
+position = Vector2(1080, 900)
+item_type = "LIFE"
+
+[node name="Enemies" type="Node2D" parent="." unique_id=591570355]
+
+[node name="VirusA1" parent="Enemies" unique_id=1601590437 instance=ExtResource("10_virus")]
+position = Vector2(420, 200)
+
+[node name="VirusA2" parent="Enemies" unique_id=1272984888 instance=ExtResource("10_virus")]
+position = Vector2(600, 380)
+
+[node name="VirusA3" parent="Enemies" unique_id=1159218716 instance=ExtResource("10_virus")]
+position = Vector2(200, 480)
+kind = "RUNNER"
+
+[node name="VirusB1" parent="Enemies" unique_id=578274301 instance=ExtResource("10_virus")]
+position = Vector2(800, 220)
+
+[node name="VirusB2" parent="Enemies" unique_id=1927898152 instance=ExtResource("10_virus")]
+position = Vector2(980, 420)
+kind = "TROJAN"
+
+[node name="VirusB3" parent="Enemies" unique_id=1277255439 instance=ExtResource("10_virus")]
+position = Vector2(900, 600)
+kind = "SPAMMER"
+
+[node name="VirusB4" parent="Enemies" unique_id=1322846994 instance=ExtResource("10_virus")]
+position = Vector2(1180, 350)
+kind = "SPAMMER"
+
+[node name="VirusB5" parent="Enemies" unique_id=1435153050 instance=ExtResource("10_virus")]
+position = Vector2(1200, 640)
+kind = "TROJAN"
+
+[node name="VirusB6" parent="Enemies" unique_id=1856089705 instance=ExtResource("10_virus")]
+position = Vector2(850, 330)
+kind = "RUNNER"
+
+[node name="Boss" parent="." unique_id=236623460 instance=ExtResource("11_boss")]
+position = Vector2(640, 900)
+
+[node name="TechPlayer" parent="." unique_id=2006403477 instance=ExtResource("12_player")]
+position = Vector2(112, 190)
+
+[node name="HUD" parent="." unique_id=189958103 instance=ExtResource("13_hud")]

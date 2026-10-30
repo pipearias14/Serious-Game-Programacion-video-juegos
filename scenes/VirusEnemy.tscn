@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://c6w7boostmi5e"]
+
+[ext_resource type="Script" uid="uid://wpxnc0vxy77i" path="res://scripts/VirusEnemy.gd" id="1_virus"]
+[ext_resource type="Texture2D" uid="uid://hmjsnbw1vxve" path="res://assets/sprites/virus_worm.png" id="2_tex"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_body"]
+radius = 6.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_detect"]
+radius = 90.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_contact"]
+radius = 8.0
+
+[node name="VirusEnemy" type="CharacterBody2D" unique_id=587261230 groups=["enemies"]]
+collision_layer = 4
+collision_mask = 17
+motion_mode = 1
+script = ExtResource("1_virus")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=854973174]
+texture = ExtResource("2_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1338008227]
+position = Vector2(0, 2)
+shape = SubResource("CircleShape2D_body")
+
+[node name="DetectionZone" type="Area2D" parent="." unique_id=767443082]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionZone" unique_id=1921642358]
+shape = SubResource("CircleShape2D_detect")
+
+[node name="ContactArea" type="Area2D" parent="." unique_id=446987503]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ContactArea" unique_id=1030777499]
+position = Vector2(0, 1)
+shape = SubResource("CircleShape2D_contact")
