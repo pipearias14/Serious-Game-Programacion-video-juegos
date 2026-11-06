@@ -15,14 +15,14 @@ const LASER_SCENE := preload("res://scenes/AntivirusLaser.tscn")
 @export var fire_cooldown := 0.30
 @export var invulnerable_time := 1.2
 @export var drop_scatter := 40.0
-@export var max_lives := 3
+@export var max_lives := 8
 ## Cuadros por segundo de la animación de caminar.
 @export var walk_fps := 8.0
 
 ## Inventario: lista de Strings, p. ej. ["RAM", "CPU", "RAM"].
 var inventory: Array = []
 var facing := Vector2.DOWN
-var lives := 3
+var lives := 8
 
 var _horizontal_priority := true
 var _can_shoot := true
