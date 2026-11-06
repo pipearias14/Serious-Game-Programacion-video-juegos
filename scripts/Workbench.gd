@@ -7,6 +7,9 @@ signal mission_completed(index: int)
 signal level_advanced(new_level: int)
 signal missing_items(text: String)
 signal all_missions_completed
+## Hay piezas suficientes: el HUD abre la mesa para montarlas en orden y luego
+## llama a `finish_assembly(errores)`.
+signal assembly_requested(bench: Node, title: String, steps: Array)
 
 ## Para añadir misiones, basta con agregar entradas a esta lista.
 const MISSIONS := [
@@ -75,12 +78,26 @@ func _try_assemble(notify: bool) -> void:
 			missing.append("%s x%d" % [item_type, lacking])
 
 	if missing.is_empty():
+		if _assembling:
+			return
 		_assembling = true
-		_player.consume_items(needs)
-		_assembling = false
-		_complete_mission()
+		var steps: Array = []
+		for item_type in GameManager.ASSEMBLY_ORDER:
+			if needs.has(item_type):
+				steps.append({"type": item_type, "count": int(needs[item_type])})
+		assembly_requested.emit(self, MISSIONS[GameManager.mission_index]["title"], steps)
 	elif notify:
 		missing_items.emit("Para ensamblar necesitas: " + ", ".join(missing))
+
+
+## Lo llama el HUD cuando el jugador terminó de montar la PC en orden.
+func finish_assembly(_errors: int) -> void:
+	if _player and GameManager.mission_index < MISSIONS.size():
+		_player.consume_items(MISSIONS[GameManager.mission_index]["needs"])
+		_complete_mission()
+	_assembling = false
+	# Si ya trae las piezas de la siguiente misión, se vuelve a abrir la mesa.
+	_try_assemble.call_deferred(false)
 
 
 func _complete_mission() -> void:

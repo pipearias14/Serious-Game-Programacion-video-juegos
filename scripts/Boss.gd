@@ -64,6 +64,7 @@ func _physics_process(delta: float) -> void:
 			_mode_time -= delta
 			if _mode_time <= 0.0:
 				_dash_dir = (_target.global_position - global_position).normalized()
+				GameManager.shake_camera(5.0, 0.45)
 				_mode = Mode.DASH
 				_mode_time = 0.55
 				sprite.modulate = _phase_color()
@@ -119,7 +120,7 @@ func _fire(dir: Vector2) -> void:
 	bullet.direction = dir
 	bullet.speed = 105.0
 	get_tree().current_scene.add_child(bullet)
-	bullet.global_position = global_position + dir * 16.0
+	bullet.global_position = global_position + dir * 24.0
 
 
 func _check_contact() -> void:
@@ -146,6 +147,12 @@ func take_damage(amount: int = 1) -> void:
 		GameManager.play_sfx("boss_roar")
 	if health <= 0:
 		_die()
+		return
+	# Pequeño aplastamiento al recibir el golpe (el balanceo usa la posición, no la escala).
+	var base := Vector2(1.5, 1.5)
+	var squash := create_tween()
+	squash.tween_property(sprite, "scale", base * Vector2(1.12, 0.88), 0.05)
+	squash.tween_property(sprite, "scale", base, 0.1)
 
 
 func _die() -> void:
@@ -154,9 +161,15 @@ func _die() -> void:
 	GameManager.play_sfx("boss_die")
 	get_tree().call_group("enemy_bullets", "queue_free")
 	died.emit()
+	GameManager.shake_camera(7.0, 0.9)
+	var colors := GameManager.texture_palette(sprite.texture)
+	colors.append(Color.WHITE)
 	var tween := create_tween()
 	for i in 6:
+		tween.tween_callback(func(): GameManager.spawn_burst(
+			global_position + Vector2(randf_range(-16, 16), randf_range(-16, 16)), colors, 14, 80.0, 0.5, 3.0))
 		tween.tween_property(sprite, "modulate", Color(3, 3, 3), 0.06)
 		tween.tween_property(sprite, "modulate", Color(1.0, 0.2, 0.2), 0.06)
+	tween.tween_callback(func(): GameManager.spawn_burst(global_position, colors, 60, 160.0, 0.9, 4.0))
 	tween.tween_property(sprite, "modulate:a", 0.0, 0.4)
 	tween.tween_callback(queue_free)

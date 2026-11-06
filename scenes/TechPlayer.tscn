@@ -1,10 +1,10 @@
 [gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/TechPlayer.gd" id="1_player"]
-[ext_resource type="Texture2D" path="res://assets/sprites/player_down.png" id="2_tex"]
+[ext_resource type="Texture2D" path="res://assets/sprites/player_down_walk.png" id="2_tex"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
-size = Vector2(10, 6)
+size = Vector2(14, 8)
 
 [node name="TechPlayer" type="CharacterBody2D"]
 collision_layer = 2
@@ -13,10 +13,12 @@ motion_mode = 1
 script = ExtResource("1_player")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("2_tex")
+hframes = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 4)
+position = Vector2(0, 6)
 shape = SubResource("RectangleShape2D_player")
 
 [node name="Camera2D" type="Camera2D" parent="."]

@@ -37,6 +37,8 @@ var _wait_time := 0.0
 var _fire_timer := 1.0
 var _target: Node2D = null
 var _dead := false
+var _bob: Tween
+var _base_scale := Vector2.ONE
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var detection_zone: Area2D = $DetectionZone
@@ -59,9 +61,11 @@ func _ready() -> void:
 	detection_zone.body_exited.connect(_on_detection_body_exited)
 	_apply_state_visuals()
 
-	var bob := create_tween().set_loops()
-	bob.tween_property(sprite, "scale", Vector2(1.1, 0.9), 0.35)
-	bob.tween_property(sprite, "scale", Vector2(0.95, 1.05), 0.35)
+	# El rebote respeta la escala base del sprite definida en la escena.
+	_base_scale = sprite.scale
+	_bob = create_tween().set_loops()
+	_bob.tween_property(sprite, "scale", _base_scale * Vector2(1.1, 0.9), 0.35)
+	_bob.tween_property(sprite, "scale", _base_scale * Vector2(0.95, 1.05), 0.35)
 
 
 func _physics_process(delta: float) -> void:
@@ -121,7 +125,7 @@ func _shoot_at(dir: Vector2) -> void:
 	var bullet := BULLET_SCENE.instantiate()
 	bullet.direction = dir
 	get_tree().current_scene.add_child(bullet)
-	bullet.global_position = global_position + dir * 8.0
+	bullet.global_position = global_position + dir * 12.0
 	GameManager.play_sfx("enemy_shoot", -14.0)
 
 
@@ -174,6 +178,18 @@ func take_damage(amount: int = 1) -> void:
 	tween.tween_property(sprite, "modulate", _state_color(), 0.15)
 	if health <= 0:
 		die()
+		return
+	_squash()
+
+
+## Se aplasta y rebota al recibir un golpe (pausa el balanceo mientras tanto).
+func _squash() -> void:
+	_bob.pause()
+	var hit := create_tween()
+	hit.tween_property(sprite, "scale", _base_scale * Vector2(1.35, 0.7), 0.05)
+	hit.tween_property(sprite, "scale", _base_scale * Vector2(0.85, 1.2), 0.08)
+	hit.tween_property(sprite, "scale", _base_scale, 0.07)
+	hit.tween_callback(_bob.play)
 
 
 func die() -> void:
@@ -181,6 +197,11 @@ func die() -> void:
 		return
 	_dead = true
 	GameManager.play_sfx("enemy_die")
+	# Explota en partículas con los colores de su sprite.
+	var colors := GameManager.texture_palette(sprite.texture)
+	colors.append(Color.WHITE)
+	GameManager.spawn_burst(global_position, colors, 22, 90.0, 0.55, 3.0)
+	GameManager.shake_camera(1.5, 0.12)
 	var drops: int = _stats["drops"]
 	for i in drops:
 		GameManager.spawn_item(GameManager.random_drop_type(), global_position, 14.0 if drops > 1 else 0.0)

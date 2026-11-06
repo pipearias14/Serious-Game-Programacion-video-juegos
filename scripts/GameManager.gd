@@ -13,12 +13,10 @@ const ITEM_INFO := {
 	"LIFE": "¡Antivirus de emergencia! Recuperas 1 corazón.",
 }
 
-## Mensaje educativo que se muestra al eliminar por primera vez cada tipo de virus.
-const VIRUS_INFO := {
-	"WORM": "Gusano: malware que se copia a sí mismo y se propaga por la red.",
-	"TROJAN": "Troyano: malware disfrazado de programa legítimo para engañarte.",
-	"SPAMMER": "Spam: mensajes masivos no deseados, a menudo con enlaces peligrosos (phishing).",
-}
+## Orden correcto para montar una PC en la mesa de trabajo.
+const ASSEMBLY_ORDER := ["BOARD", "CPU", "RAM", "DISK"]
+
+const ALBUM_PATH := "user://album.cfg"
 
 var music_enabled := true
 
@@ -26,6 +24,15 @@ var music_enabled := true
 var trivia_mode := "pre"      # "pre" o "post"
 var trivia_pre_score := -1    # -1 = sin registrar
 var trivia_post_score := -1
+## Acierto (true/false) de cada pregunta, en el orden de TriviaData.QUESTIONS.
+var trivia_pre_answers: Array = []
+var trivia_post_answers: Array = []
+
+## Estadísticas de la partida actual (para el resumen final).
+var run_stats := {}
+
+## Fichas del álbum desbloqueadas (se guardan en disco entre partidas).
+var album: Dictionary = {}
 
 ## Progreso de misiones (compartido por TODAS las mesas de trabajo).
 var mission_index := 0
@@ -39,6 +46,8 @@ var _music_name := ""
 
 func _ready() -> void:
 	_register_input()
+	_load_album()
+	reset_run_stats()
 	_music_player = AudioStreamPlayer.new()
 	_music_player.volume_db = -12.0
 	add_child(_music_player)
@@ -60,6 +69,38 @@ func start_new_run() -> void:
 	trivia_mode = "pre"
 	trivia_pre_score = -1
 	trivia_post_score = -1
+	trivia_pre_answers = []
+	trivia_post_answers = []
+	reset_run_stats()
+
+
+func reset_run_stats() -> void:
+	run_stats = {"kills": 0, "lives_lost": 0, "assembly_errors": 0, "pcs_built": 0,
+		"time": 0.0, "won": false}
+
+
+# ---------------------------------------------------------------- Álbum
+## Marca una ficha como descubierta. Devuelve true si es nueva en el álbum.
+func unlock_card(card_id: String) -> bool:
+	if album.has(card_id):
+		return false
+	album[card_id] = true
+	_save_album()
+	return true
+
+
+func _load_album() -> void:
+	var cfg := ConfigFile.new()
+	if cfg.load(ALBUM_PATH) == OK:
+		for key in cfg.get_section_keys("album") if cfg.has_section("album") else []:
+			album[key] = true
+
+
+func _save_album() -> void:
+	var cfg := ConfigFile.new()
+	for key in album:
+		cfg.set_value("album", key, true)
+	cfg.save(ALBUM_PATH)
 
 
 # ---------------------------------------------------------------- Entrada
@@ -120,6 +161,77 @@ func _scatter_position(origin: Vector2, radius: float) -> Vector2:
 		var hit_pos: Vector2 = hit["position"]
 		return origin + (hit_pos - origin) * 0.5
 	return target
+
+
+# ---------------------------------------------------------------- Efectos visuales
+## Estallido de partículas (cuadritos de píxel) en `pos`. Se libera solo al terminar.
+func spawn_burst(pos: Vector2, colors: Array, amount: int = 16, speed: float = 70.0,
+		lifetime: float = 0.5, size: float = 2.0) -> void:
+	var scene := get_tree().current_scene
+	if scene == null:
+		return
+	var p := CPUParticles2D.new()
+	p.one_shot = true
+	p.explosiveness = 1.0
+	p.amount = amount
+	p.lifetime = lifetime
+	p.direction = Vector2.UP
+	p.spread = 180.0
+	p.gravity = Vector2.ZERO
+	p.initial_velocity_min = speed * 0.4
+	p.initial_velocity_max = speed
+	p.damping_min = speed * 0.8
+	p.damping_max = speed * 1.6
+	p.scale_amount_min = size * 0.5
+	p.scale_amount_max = size
+	var ramp := Gradient.new()
+	ramp.set_color(0, Color.WHITE)
+	ramp.set_color(1, Color(1, 1, 1, 0))
+	p.color_ramp = ramp
+	if colors.size() > 1:
+		var tint := Gradient.new()
+		tint.interpolation_mode = Gradient.GRADIENT_INTERPOLATE_CONSTANT
+		tint.offsets = PackedFloat32Array()
+		tint.colors = PackedColorArray()
+		for i in colors.size():
+			tint.add_point(float(i) / colors.size(), colors[i])
+		p.color_initial_ramp = tint
+	elif colors.size() == 1:
+		p.color = colors[0]
+	p.z_index = 5
+	p.finished.connect(p.queue_free)
+	scene.add_child(p)
+	p.global_position = pos
+	p.emitting = true
+
+
+## Colores representativos de un sprite (para que la explosión tenga sus colores).
+func texture_palette(tex: Texture2D, max_colors: int = 4) -> Array:
+	var result: Array = []
+	if tex == null:
+		return result
+	var img := tex.get_image()
+	if img == null:
+		return result
+	if img.is_compressed():
+		img.decompress()
+	var counts := {}
+	for y in img.get_height():
+		for x in img.get_width():
+			var c := img.get_pixel(x, y)
+			if c.a < 0.5 or c.get_luminance() < 0.15:
+				continue # transparente o contorno oscuro
+			counts[c] = int(counts.get(c, 0)) + 1
+	var sorted := counts.keys()
+	sorted.sort_custom(func(a, b): return counts[a] > counts[b])
+	return sorted.slice(0, max_colors)
+
+
+## Sacude la cámara del jugador.
+func shake_camera(strength: float, duration: float = 0.25) -> void:
+	var player := get_tree().get_first_node_in_group("player")
+	if player and player.has_method("shake"):
+		player.shake(strength, duration)
 
 
 # ---------------------------------------------------------------- Efectos de sonido
